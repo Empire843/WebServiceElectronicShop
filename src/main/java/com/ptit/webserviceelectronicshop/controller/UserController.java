@@ -3,9 +3,14 @@ package com.ptit.webserviceelectronicshop.controller;
 import com.ptit.webserviceelectronicshop.model.User;
 import com.ptit.webserviceelectronicshop.model.request_body.UserDTO;
 import com.ptit.webserviceelectronicshop.service.implement.UserServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -14,27 +19,40 @@ public class UserController {
     private UserServiceImpl userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userRegistrationRequest) {
-        User createdUser = userService.registerUser(userRegistrationRequest);
-        return ResponseEntity.ok().body(createdUser);
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO body) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+        ModelMapper mapper = new ModelMapper();
+        User user = mapper.map(body, User.class);
+        try {
+            User createdUser = userService.registerUser(user);
+            response.put("message", "User registered successfully");
+            response.put("user", createdUser);
+        } catch (RuntimeException e) {
+            error.put("message", e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable("id") Long userId) {
-        User user = userService.getUserById(userId);
-        return ResponseEntity.ok().body(user);
+    public User getUserById(@PathVariable("id") Long userId) {
+        return userService.getUserById(userId);
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        User updatedUser = userService.updateUser(userId, userUpdateRequest);
-        return ResponseEntity.ok().body(updatedUser);
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long userId, @RequestBody UserDTO body) {
+        return null;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return null;
     }
 }
 
