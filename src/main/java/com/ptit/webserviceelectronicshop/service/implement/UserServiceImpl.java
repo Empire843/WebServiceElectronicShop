@@ -33,6 +33,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findById(id).orElse(null);
+    }
+
+    public void updateUser(User user) {
+        repository.save(user);
+    }
+
+    public boolean deleteUser(Long id) {
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public User login(String email) {
+        return repository.findByEmail(email);
     }
 }
