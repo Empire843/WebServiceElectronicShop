@@ -1,6 +1,8 @@
 package com.ptit.webserviceelectronicshop.service.implement;
 
+import com.ptit.webserviceelectronicshop.model.Category;
 import com.ptit.webserviceelectronicshop.model.Product;
+import com.ptit.webserviceelectronicshop.repository.CategoryRepository;
 import com.ptit.webserviceelectronicshop.repository.ProductRepository;
 import com.ptit.webserviceelectronicshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository repo;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public void addProduct(Product product) {
         repo.save(product);
@@ -27,10 +32,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean deleteProduct(Long id) {
         Optional<Product> product = repo.findById(id);
-        if(product.isPresent()){
+        if (product.isPresent()) {
             repo.deleteById(id);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -38,5 +43,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> getProductById(Long id) {
         return repo.findById(id);
+    }
+
+    @Override
+    public List<Product> getProductByCategory(Category category) {
+        return repo.findByCategory(category);
     }
 }

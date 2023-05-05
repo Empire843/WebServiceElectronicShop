@@ -1,4 +1,4 @@
-package com.ptit.webserviceelectronicshop.model.request_body;
+package com.ptit.webserviceelectronicshop.model.request_body.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;

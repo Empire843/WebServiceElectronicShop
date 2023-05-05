@@ -1,12 +1,10 @@
 package com.ptit.webserviceelectronicshop.controller;
 
 import com.ptit.webserviceelectronicshop.model.User;
-import com.ptit.webserviceelectronicshop.model.request_body.LoginUserBody;
-import com.ptit.webserviceelectronicshop.model.request_body.RegisterUserBody;
-import com.ptit.webserviceelectronicshop.model.request_body.UpdateUserBody;
-import com.ptit.webserviceelectronicshop.model.request_body.UserDTO;
+import com.ptit.webserviceelectronicshop.model.request_body.User.LoginUserBody;
+import com.ptit.webserviceelectronicshop.model.request_body.User.RegisterUserBody;
+import com.ptit.webserviceelectronicshop.model.request_body.User.UpdateUserBody;
 import com.ptit.webserviceelectronicshop.service.implement.UserServiceImpl;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

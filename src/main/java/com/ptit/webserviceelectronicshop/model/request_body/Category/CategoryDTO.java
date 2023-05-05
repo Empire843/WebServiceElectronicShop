@@ -1,4 +1,4 @@
-package com.ptit.webserviceelectronicshop.model.request_body;
+package com.ptit.webserviceelectronicshop.model.request_body.Category;
 
 import lombok.Data;
 

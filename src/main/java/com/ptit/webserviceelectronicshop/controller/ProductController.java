@@ -1,11 +1,12 @@
 package com.ptit.webserviceelectronicshop.controller;
 
+import com.ptit.webserviceelectronicshop.model.Category;
 import com.ptit.webserviceelectronicshop.model.Product;
-import com.ptit.webserviceelectronicshop.model.User;
-import com.ptit.webserviceelectronicshop.model.request_body.ProductDTO;
+import com.ptit.webserviceelectronicshop.model.request_body.Product.ProductDTO;
+import com.ptit.webserviceelectronicshop.service.CategoryService;
+import com.ptit.webserviceelectronicshop.service.implement.CategoryServiceImpl;
 import com.ptit.webserviceelectronicshop.service.implement.ProductServiceImpl;
 import jakarta.validation.constraints.NotNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,8 @@ public class ProductController {
 
     @Autowired
     private ProductServiceImpl service;
+    @Autowired
+    private CategoryServiceImpl categoryService;
 
     @GetMapping("/all")
     public List<Product> getAllProducts() {
@@ -43,19 +46,31 @@ public class ProductController {
     public ResponseEntity<Object> addNewProduct(@NotNull @RequestBody @Valid ProductDTO body, BindingResult bindingResult) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
+
         if (bindingResult.hasErrors()) {
             for (FieldError error1 : bindingResult.getFieldErrors()) {
                 error.put(error1.getField(), error1.getDefaultMessage());
             }
             return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
         }
-        ModelMapper mapper = new ModelMapper();
-        Product user = mapper.map(body, Product.class);
+//        ModelMapper mapper = new ModelMapper();
+//        Product user = mapper.map(body, Product.class);
 
         Product product = new Product();
-        product.setCreated_date(LocalDateTime.now());
-        //code here
 
+        product.setCreated_date(LocalDateTime.now());
+        product.setPrice(body.getPrice());
+        product.setQuantity(body.getQuantity());
+        product.setName(body.getName());
+        product.setImage(body.getImage());
+        product.setDescription(body.getDescription());
+
+        Category category = categoryService.getCategoryById(body.getCategory_id());
+        if (category != null) {
+            product.setCategory(category);
+        } else {
+            return new ResponseEntity<>("Category of product not found", HttpStatus.NOT_FOUND);
+        }
 
         response.put("message", "Product has been added successfully");
         response.put("product", product);
