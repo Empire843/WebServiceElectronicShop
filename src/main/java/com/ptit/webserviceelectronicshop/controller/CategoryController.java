@@ -21,7 +21,7 @@ public class CategoryController {
     private CategoryServiceImpl service;
 
     @GetMapping("/all")
-    public List<Category> getAllCategory(@RequestBody CategoryDTO body) {
+    public List<Category> getAllCategory() {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
         List<Category> categories = service.getAllCategory();
