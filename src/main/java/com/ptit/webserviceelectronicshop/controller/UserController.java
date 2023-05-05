@@ -1,6 +1,7 @@
 package com.ptit.webserviceelectronicshop.controller;
 
 import com.ptit.webserviceelectronicshop.model.User;
+import com.ptit.webserviceelectronicshop.model.request_body.RegisterUserBody;
 import com.ptit.webserviceelectronicshop.model.request_body.UserDTO;
 import com.ptit.webserviceelectronicshop.service.implement.UserServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -13,17 +14,22 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO body) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterUserBody body) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-        ModelMapper mapper = new ModelMapper();
-        User user = mapper.map(body, User.class);
+//        ModelMapper mapper = new ModelMapper();
+//        User user = mapper.map(body, User.class)
+        User user = new User();
+        user.setEmail(body.getEmail());
+        user.setPassword(body.getPassword());
+        user.setFull_name(body.getFull_name());
         try {
             User createdUser = userService.registerUser(user);
             response.put("message", "User registered successfully");

@@ -1,13 +1,16 @@
 package com.ptit.webserviceelectronicshop.controller;
 
 import com.ptit.webserviceelectronicshop.model.Product;
+import com.ptit.webserviceelectronicshop.model.User;
 import com.ptit.webserviceelectronicshop.model.request_body.ProductDTO;
 import com.ptit.webserviceelectronicshop.service.implement.ProductServiceImpl;
 import jakarta.validation.constraints.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/products")
 public class ProductController {
 
@@ -39,9 +43,19 @@ public class ProductController {
     public ResponseEntity<Object> addNewProduct(@NotNull @RequestBody @Valid ProductDTO body, BindingResult bindingResult) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            for (FieldError error1 : bindingResult.getFieldErrors()) {
+                error.put(error1.getField(), error1.getDefaultMessage());
+            }
+            return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+        }
+        ModelMapper mapper = new ModelMapper();
+        Product user = mapper.map(body, Product.class);
+
         Product product = new Product();
         product.setCreated_date(LocalDateTime.now());
         //code here
+
 
         response.put("message", "Product has been added successfully");
         response.put("product", product);
@@ -66,7 +80,6 @@ public class ProductController {
         if (product.isPresent()) {
             Product existingProduct = product.get();
 //            code here
-
 
             response.put("message", "Product has been updated successfully");
             response.put("product", existingProduct);

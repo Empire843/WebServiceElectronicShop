@@ -16,8 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String username;
-    @Column
     private String full_name;
     @Column
     @JsonIgnore
