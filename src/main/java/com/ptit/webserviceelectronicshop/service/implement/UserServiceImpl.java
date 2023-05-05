@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@EnableJpaRepositories(basePackageClasses = UserRepository.class)
+//@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
+//    private final UserRepository repository;
+//
+//    public UserServiceImpl(UserRepository repository) {
+//        this.repository = repository;
+//    }
 
-    public UserServiceImpl(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    UserRepository repository;
 
     @Override
     public User registerUser(User user) {
