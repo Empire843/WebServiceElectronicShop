@@ -6,6 +6,7 @@ import com.ptit.webserviceelectronicshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,4 +40,21 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> getProductById(Long id) {
         return repo.findById(id);
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public List<Product> getProductByCategory(Category category) {
+        return repo.findByCategory(category);
+    }
+
+    @Override
+    public ArrayList<Product> getProductsContainKeys(String key) {
+        ArrayList<Product> listProducts = new ArrayList<Product>();
+        listProducts = this.repo.findByKey(key);
+        return listProducts;
+    }
+
+
+>>>>>>> Stashed changes
 }

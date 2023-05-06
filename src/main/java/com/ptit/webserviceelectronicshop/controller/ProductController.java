@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -89,5 +90,19 @@ public class ProductController {
             error.put("error", "Product not found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
+    }
+
+    //Example: http://localhost:8080/api/products/filter/products?key=abc
+    @GetMapping("/filter/products")
+    public ArrayList<Product> filterByKey(@RequestParam(name = "key") String keyword) {
+        HashMap<String, Object> error = new HashMap<>();
+        ArrayList<Product> listProducts = new ArrayList<>();
+
+        try {
+            listProducts = this.service.getProductsContainKeys(keyword);
+        }
+        catch (Exception e) {
+        }
+        return listProducts;
     }
 }

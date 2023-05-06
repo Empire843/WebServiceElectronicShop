@@ -34,6 +34,13 @@ public class OrderController {
     @Autowired
     private ProductServiceImpl productService;
 
+//    {
+//            "userId": 1,
+//            "productId": 2,
+//            "quantity": 2,
+//            "price": 5000,
+//            "status": "new"
+//    }
     @PostMapping("/save")
     public ResponseEntity<Object> createOrder(@NotNull @RequestBody @Valid OrderDTO orderDTO, BindingResult bindingResult) {
         HashMap<String, Object> response = new HashMap<>();
