@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.validation.Valid;
+import org.springframework.web.client.RestTemplate;
 
-///api/products/filter/categories
+///api/products/filter/price
 @RestController
 @CrossOrigin
 @RequestMapping("/api/products")
@@ -118,5 +119,66 @@ public class ProductController {
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(listProducts);
+    }
+
+    @GetMapping("/filter/price")
+    public ResponseEntity<ArrayList<Product>> getProductInSpacePrice(
+            @RequestParam(name = "start") Double start,
+            @RequestParam(name = "end") Double end
+    ) {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            products = this.service.getProductInSpacePrice(start, end);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ArrayList<Product>> getSelectedProducts(@RequestParam("ids") List<Long> selectedIds) {
+        ArrayList<Product> products = new ArrayList<>();
+
+        try {
+            products = this.service.getProductsByIds(selectedIds);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter/combination")
+    public ResponseEntity<ArrayList<Product>> getCombinationFilterProducts(
+            @RequestParam(name = "ids") List<Long> selectedIds,
+            @RequestParam(name = "start") Double start,
+            @RequestParam(name = "end") Double end
+    )
+    {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            ArrayList<Product> filter1 = new ArrayList<>();
+            ArrayList<Product> filter2 = new ArrayList<>();
+            filter1 = this.service.getProductsByIds(selectedIds);
+            filter2 = this.service.getProductInSpacePrice(start, end);
+
+            for(Product p1: filter1) {
+                Long id = p1.getId();
+                for(Product p2: filter2) {
+                    Long id2 = p2.getId();
+                    if(id == id2) {
+                        products.add(p1);
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
     }
 }

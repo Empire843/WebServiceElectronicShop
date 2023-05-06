@@ -61,4 +61,23 @@ public class ProductServiceImpl implements ProductService {
         return  products;
     }
 
+    @Override
+    public ArrayList<Product> getProductInSpacePrice(Double start, Double end) {
+        ArrayList<Product> products = new ArrayList<>();
+        products = this.repo.getProductInSpacePrice(start, end);
+        return products;
+    }
+
+    @Override
+    public ArrayList<Product> getProductsByIds(List<Long> selectedIds) {
+        ArrayList<Product> products = new ArrayList<>();
+
+        for (Long id : selectedIds) {
+            ArrayList<Product> list = this.repo.getProductsByCategory(id);
+            products.addAll(list);
+        }
+
+        return products;
+    }
+
 }

@@ -18,4 +18,8 @@ public interface ProductService {
     ArrayList<Product> getProductsContainKeys(String key);
 
     ArrayList<Product> getProductsByCategory(Long id);
+
+    ArrayList<Product> getProductInSpacePrice(Double start, Double end);
+
+    ArrayList<Product> getProductsByIds(List<Long> selectedIds);
 }

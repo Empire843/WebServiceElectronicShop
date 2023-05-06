@@ -19,4 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId")
     ArrayList<Product> getProductsByCategory(@Param("categoryId") Long categoryId);
+
+    @Query("SELECT p FROM Product p WHERE p.price BETWEEN :start AND :end")
+    ArrayList<Product> getProductInSpacePrice(@Param("start") Double start, @Param("end") Double end);
 }
