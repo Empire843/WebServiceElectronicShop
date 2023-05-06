@@ -5,10 +5,12 @@ import com.ptit.webserviceelectronicshop.model.request_body.CategoryDTO;
 import com.ptit.webserviceelectronicshop.repository.CategoryRepository;
 import com.ptit.webserviceelectronicshop.service.implement.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -58,5 +60,18 @@ public class CategoryController {
             error.put("message", "Category not found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ArrayList<Category>> getCategoriesByName(@RequestParam(name="key") String key) {
+        ArrayList<Category> categories = new ArrayList<>();
+        try {
+            categories = this.service.getCategoryContainKey(key);
+        }
+        catch (Exception ex)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(categories);
     }
 }

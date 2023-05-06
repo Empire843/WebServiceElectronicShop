@@ -6,6 +6,8 @@ import com.ptit.webserviceelectronicshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
@@ -38,5 +40,12 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<Category> getCategoryContainKey(String key) {
+        ArrayList<Category> categories = new ArrayList<>();
+        categories = this.repository.getCategoryByKey(key);
+        return categories;
     }
 }

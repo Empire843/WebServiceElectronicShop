@@ -1,5 +1,6 @@
 package com.ptit.webserviceelectronicshop.service.implement;
 
+import com.ptit.webserviceelectronicshop.model.Category;
 import com.ptit.webserviceelectronicshop.model.Product;
 import com.ptit.webserviceelectronicshop.repository.ProductRepository;
 import com.ptit.webserviceelectronicshop.service.ProductService;
@@ -40,8 +41,6 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> getProductById(Long id) {
         return repo.findById(id);
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public List<Product> getProductByCategory(Category category) {
@@ -55,6 +54,11 @@ public class ProductServiceImpl implements ProductService {
         return listProducts;
     }
 
+    @Override
+    public ArrayList<Product> getProductsByCategory(Long id) {
+        ArrayList<Product> products = new ArrayList<>();
+        products = this.repo.getProductsByCategory(id);
+        return  products;
+    }
 
->>>>>>> Stashed changes
 }

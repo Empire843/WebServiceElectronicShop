@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import jakarta.validation.Valid;
 
-
+///api/products/filter/categories
 @RestController
 @CrossOrigin
 @RequestMapping("/api/products")
@@ -93,6 +93,8 @@ public class ProductController {
     }
 
     //Example: http://localhost:8080/api/products/filter/products?key=abc
+    // Input: Key Name
+    // Output: List Các product
     @GetMapping("/filter/products")
     public ArrayList<Product> filterByKey(@RequestParam(name = "key") String keyword) {
         HashMap<String, Object> error = new HashMap<>();
@@ -104,5 +106,17 @@ public class ProductController {
         catch (Exception e) {
         }
         return listProducts;
+    }
+
+    @GetMapping("/filter/categories")
+    public ResponseEntity<ArrayList<Product>> getProductsByCategory(@RequestParam(name = "id") Long id) {
+        ArrayList<Product> listProducts = new ArrayList<>();
+        try {
+            listProducts = this.service.getProductsByCategory(id);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listProducts);
     }
 }
