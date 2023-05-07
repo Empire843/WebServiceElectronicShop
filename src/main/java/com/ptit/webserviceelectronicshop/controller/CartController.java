@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -87,9 +85,6 @@ public class CartController {
 
     @GetMapping("/{id}/items")
     public List<CartItem> getCartItemsByCartId(@PathVariable Long id) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.registerModule(new Hibernate5Module().configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, true));
-
         return cartItemRepository.findByCartId(id);
     }
 }
