@@ -94,7 +94,6 @@ public class UserController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } else {
             User user = userService.getUserById(userId);
-
             user.setAddress(body.getAddress());
             user.setPhone(body.getPhone());
             user.setFull_name(body.getFull_name());

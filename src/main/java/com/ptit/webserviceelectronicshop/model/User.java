@@ -32,6 +32,7 @@ public class User {
     private String avatar;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Cart cart;
     public User() {
 

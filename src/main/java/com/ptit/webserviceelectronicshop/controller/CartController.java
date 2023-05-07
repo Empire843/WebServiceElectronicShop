@@ -1,20 +1,14 @@
 package com.ptit.webserviceelectronicshop.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ptit.webserviceelectronicshop.model.Cart;
 import com.ptit.webserviceelectronicshop.model.CartItem;
 import com.ptit.webserviceelectronicshop.model.Product;
 import com.ptit.webserviceelectronicshop.model.User;
 import com.ptit.webserviceelectronicshop.model.request_body.Cart.CartBody;
-import com.ptit.webserviceelectronicshop.model.request_body.Cart.CartItemBody;
-import com.ptit.webserviceelectronicshop.model.request_body.Cart.CartItemDTO;
 import com.ptit.webserviceelectronicshop.repository.CartItemRepository;
-import com.ptit.webserviceelectronicshop.repository.CartRepository;
 import com.ptit.webserviceelectronicshop.repository.ProductRepository;
 import com.ptit.webserviceelectronicshop.service.UserService;
 import com.ptit.webserviceelectronicshop.service.implement.CartServiceImpl;
-import org.apache.catalina.mapper.Mapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
