@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @AllArgsConstructor
 @Data
 public class User {
@@ -31,6 +31,8 @@ public class User {
     @Column
     private String avatar;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
     public User() {
 
     }

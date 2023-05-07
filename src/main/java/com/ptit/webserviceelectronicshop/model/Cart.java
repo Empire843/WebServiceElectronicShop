@@ -1,10 +1,12 @@
 package com.ptit.webserviceelectronicshop.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,14 +18,15 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+//    @OneToMany(mappedBy = "cart", cascade = CascadeType.PERSIST)
+//    private List<CartItem> items = new ArrayList<>();
 
-    @Column
-    private int quantity;
+    @Column(name = "total_amount")
+    private Long totalAmount;
+
+    // getters and setters
 }

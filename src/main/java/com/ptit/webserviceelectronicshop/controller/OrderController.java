@@ -51,7 +51,7 @@ public class OrderController {
             order.setPrice(orderDTO.getPrice());
             order.setStatus(orderDTO.getStatus());
             order.setQuantity(orderDTO.getQuantity());
-            order.setUser(this.userService.getUserById(orderDTO.getUserId()));
+//            order.setUser(this.userService.getUserById(orderDTO.getUserId()));
             order.setProduct(this.productService.getProductById(orderDTO.getProductId()).get());
 
             this.orderService.addOrder(order);

@@ -39,8 +39,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-
-        return this.service.getProductById(id).get();
+        return this.service.getProductById(id).orElse(null);
     }
 
     @PostMapping("/add")
@@ -72,7 +71,7 @@ public class ProductController {
         } else {
             return new ResponseEntity<>("Category of product not found", HttpStatus.NOT_FOUND);
         }
-
+        service.addProduct(product);
         response.put("message", "Product has been added successfully");
         response.put("product", product);
         return new ResponseEntity<Object>(response, HttpStatus.OK);

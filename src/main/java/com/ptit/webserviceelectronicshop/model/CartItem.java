@@ -5,33 +5,34 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-@Entity
 @Data
-@AllArgsConstructor
+@Entity
+@Table(name = "cart_item")
 @NoArgsConstructor
-@Table(name = "orders")
-public class Order {
+@AllArgsConstructor
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
     @JsonIgnore
+    private Cart cart;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "price")
-    private double price;
-
-    @Column(name = "status")
-    private String status;
+    public CartItem(Cart cart, Product product, int quantity) {
+        this.cart = cart;
+        this.product = product;
+        this.quantity = quantity;
+    }
+    // getters and setters
 }
+
