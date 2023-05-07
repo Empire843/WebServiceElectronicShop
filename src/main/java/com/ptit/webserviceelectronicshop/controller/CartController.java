@@ -41,6 +41,7 @@ public class CartController {
     public ResponseEntity<?> addToCart(@RequestBody CartBody body) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
+
         User user = userService.getUserById(body.getUserId());
         Cart cart = user.getCart();
         List<CartItem> list = new ArrayList<>();
@@ -50,21 +51,28 @@ public class CartController {
             cart.setTotalAmount(0L);
             cartService.saveCart(cart);
         }
+        Product product = productRepository.findById(body.getProductId()).orElse(null);
         list = cartItemRepository.findByCartId(cart.getId());
         for (CartItem item : list) {
             if (item.getProduct().getId() == body.getProductId()) {
+                if(item.getQuantity() + body.getQuantity() > product.getQuantity()){
+                    error.put("message", "The quantity of product is not enough!");
+                    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+                }
                 cart.setTotalAmount(cart.getTotalAmount() + (long) (item.getProduct().getPrice() * body.getQuantity()));
+
                 item.setQuantity(item.getQuantity() + body.getQuantity());
                 item.setCart(cart);
+
                 cartService.saveCartWithItems(cart);
+
                 response.put("cartId", cart.getId());
                 response.put("message", "The quantity of product updated!");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
-        Product product = productRepository.findById(body.getProductId()).orElse(null);
-        if (product == null) {
 
+        if (product == null) {
             error.put("message", "Product id is not valid");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
@@ -101,6 +109,7 @@ public class CartController {
         response.put("message", "Deleted successfully!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 //    @PutMapping("/{id}")
 //    public ResponseEntity<?> editOneProduct(@PathVariable Long id) {
 //        HashMap<String, Object> response = new HashMap<>();

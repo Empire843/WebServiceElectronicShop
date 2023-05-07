@@ -1,5 +1,6 @@
 package com.ptit.webserviceelectronicshop.controller;
 
+import com.ptit.webserviceelectronicshop.model.Cart;
 import com.ptit.webserviceelectronicshop.model.User;
 import com.ptit.webserviceelectronicshop.model.request_body.User.LoginUserBody;
 import com.ptit.webserviceelectronicshop.model.request_body.User.RegisterUserBody;
@@ -60,6 +61,8 @@ public class UserController {
         user.setPassword(body.getPassword());
         user.setFull_name(body.getFull_name());
         user.setRole("USER");
+        Cart cart = new Cart();
+        user.setCart(cart);
         try {
             User createdUser = userService.registerUser(user);
             response.put("message", "User registered successfully");
