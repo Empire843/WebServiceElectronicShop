@@ -87,4 +87,31 @@ public class CartController {
     public List<CartItem> getCartItemsByCartId(@PathVariable Long id) {
         return cartItemRepository.findByCartId(id);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOneProduct(@PathVariable Long id) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+        CartItem cartItem = cartItemRepository.findById(id).orElse(null);
+        if (cartItem == null) {
+            response.put("message", "Cart item id is not valid");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        cartItemRepository.delete(cartItem);
+        response.put("message", "Deleted successfully!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> editOneProduct(@PathVariable Long id) {
+//        HashMap<String, Object> response = new HashMap<>();
+//        HashMap<String, Object> error = new HashMap<>();
+//        CartItem cartItem = cartItemRepository.findById(id).orElse(null);
+//        if (cartItem == null) {
+//            response.put("message", "Cart item id is not valid");
+//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        }
+//        cartItemRepository.delete(cartItem);
+//        response.put("message", "Deleted successfully!");
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 }
