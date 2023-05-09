@@ -12,13 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//@EnableJpaRepositories(basePackageClasses = OrderRepository.class)
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderRepository orderRepository;
 
-    @Transactional
     @Override
     public Order addOrder(Order order) {
         //Optional<Order> savedOrder = Optional.of(this.orderRepository.save(order));
@@ -35,9 +33,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean checkOrderByVnpayCode(String vnpayCode) {
+        Optional<Order> optionalOrder = orderRepository.findByVnpayCode(vnpayCode);
+        return optionalOrder.isPresent();
+    }
+
+    @Override
     public void saveOrder(Order order) {
         orderRepository.save(order);
     }
+
     @Override
     public void updateOrder(Order order) {
         Order existingOrder = orderRepository.findById(order.getId())
@@ -45,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         existingOrder.setStatus(order.getStatus());
         existingOrder.setTotal_price(order.getTotal_price());
         existingOrder.setTotal_quantity(order.getTotal_quantity());
-        existingOrder.setVnpay_code(order.getVnpay_code());
+        existingOrder.setVnpayCode(order.getVnpayCode());
         existingOrder.setUser(order.getUser());
         orderRepository.save(existingOrder);
     }

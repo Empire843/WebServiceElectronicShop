@@ -38,5 +38,7 @@ public class Order {
     @Column(name = "status")
     private String status;
     @Column(name = "vnpay_code")
-    private String vnpay_code;
+    private String vnpayCode;
+    @Column(name = "payment_at")
+    private String payment_at;
 }

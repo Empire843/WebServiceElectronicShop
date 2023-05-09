@@ -4,6 +4,7 @@ import com.ptit.webserviceelectronicshop.model.*;
 import com.ptit.webserviceelectronicshop.model.request_body.OrderDTO;
 import com.ptit.webserviceelectronicshop.repository.CartItemRepository;
 import com.ptit.webserviceelectronicshop.repository.OrderItemRepository;
+import com.ptit.webserviceelectronicshop.service.OrderService;
 import com.ptit.webserviceelectronicshop.service.implement.CartServiceImpl;
 import com.ptit.webserviceelectronicshop.service.implement.OrderServiceImpl;
 import com.ptit.webserviceelectronicshop.service.implement.ProductServiceImpl;
@@ -18,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,28 +50,33 @@ public class OrderController {
     public ResponseEntity<Object> createOrder(@NotNull @RequestBody @Valid OrderDTO body) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
-        User user = userService.getUserById(body.getId());
+        User user = userService.getUserById(body.getUserId());
         if (user == null) {
             error.put("message", "User not found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
+        if(orderService.checkOrderByVnpayCode(body.getVnpayCode())){
+            error.put("message", "Vnpay code is exist");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
         Order order = new Order();
         orderService.saveOrder(order);
-//        Cart cart = cartService.getCartByUserId(user.getId());
         List<OrderItem> list = new ArrayList<>();
         Long cartId = body.getCartId();
         List<CartItem> listCartItem = cartItemRepository.findByCartId(cartId);
-        System.out.println(listCartItem + "-" + cartId);
+
         for (CartItem item : listCartItem) {
-            for (Long idp : body.getProductIds()){
-                if(idp == item.getProduct().getId()){
-                    System.out.println(item);
+            for (Long idp : body.getProductIds()) {
+                if (idp == item.getProduct().getId()) {
+
                     OrderItem orderItem = new OrderItem();
                     orderItem.setProduct(item.getProduct());
                     orderItem.setQuantity(item.getQuantity());
                     orderItem.setOrder(order);
+
                     order.setTotal_quantity(order.getTotal_quantity() + item.getQuantity());
-                    System.out.println(orderItem);
+                    order.setTotal_price(order.getTotal_price() + item.getProduct().getPrice() * item.getQuantity());
+
                     orderItemRepository.save(orderItem);
                     list.add(orderItem);
                 }
@@ -76,13 +84,15 @@ public class OrderController {
         }
 
         order.setUser(user);
-//        order.setItems(list);
         order.setTotal_quantity(0);
         order.setTotal_price(0);
-        order.setVnpay_code(body.getVnpay_code());
+        order.setVnpayCode(body.getVnpayCode());
         order.setStatus(body.getStatus());
-        System.out.println(list);
-//        orderItemRepository.saveAll(list);
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formattedDateTime = localDateTime.format(formatter);
+        order.setPayment_at(formattedDateTime);
         orderService.updateOrder(order);
         response.put("message", "Order created successfully");
         response.put("order", order);

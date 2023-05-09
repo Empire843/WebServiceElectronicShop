@@ -9,6 +9,8 @@ public interface OrderService {
 
     Optional<Order> getOrder(Long orderId);
 
+    boolean checkOrderByVnpayCode(String vnpayCode);
+
     void saveOrder(Order order);
 
     void updateOrder(Order order);
