@@ -2,6 +2,7 @@ package com.ptit.webserviceelectronicshop.controller;
 
 import com.ptit.webserviceelectronicshop.model.Cart;
 import com.ptit.webserviceelectronicshop.model.User;
+import com.ptit.webserviceelectronicshop.model.request_body.User.ChangePasswordUserBody;
 import com.ptit.webserviceelectronicshop.model.request_body.User.LoginUserBody;
 import com.ptit.webserviceelectronicshop.model.request_body.User.RegisterUserBody;
 import com.ptit.webserviceelectronicshop.model.request_body.User.UpdateUserBody;
@@ -85,7 +86,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/edit-profile")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long userId, @RequestBody UpdateUserBody body) {
         HashMap<String, Object> response = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
@@ -102,6 +103,28 @@ public class UserController {
             userService.updateUser(user);
             response.put("message", "User updated successfully");
             response.put("user", user);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable("id") Long userId, @RequestBody ChangePasswordUserBody body) {
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> error = new HashMap<>();
+        User user = new User();
+        user = userService.getUserById(userId);
+        if (user == null) {
+            error.put("message", "User not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        } else {
+            if (!user.getPassword().equals(body.getOldPassword())) {
+                error.put("message", "Password does not match!");
+                return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+            } else {
+                user.setPassword(body.getNewPassword());
+                userService.updateUser(user);
+                response.put("message", "Change password successfully");
+            }
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
