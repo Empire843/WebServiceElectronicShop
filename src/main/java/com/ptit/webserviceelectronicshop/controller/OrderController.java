@@ -64,7 +64,10 @@ public class OrderController {
         List<OrderItem> list = new ArrayList<>();
         Long cartId = body.getCartId();
         List<CartItem> listCartItem = cartItemRepository.findByCartId(cartId);
-
+        if(listCartItem.size() == 0){
+            error.put("message", "Cart is empty!");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
         for (CartItem item : listCartItem) {
             for (Long idp : body.getProductIds()) {
                 if (idp == item.getProduct().getId()) {
