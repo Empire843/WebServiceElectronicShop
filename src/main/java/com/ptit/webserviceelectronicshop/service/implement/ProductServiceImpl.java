@@ -49,4 +49,15 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductByCategory(Category category) {
         return repo.findByCategory(category);
     }
+    @Override
+    public void updateProductQuantity(Long productId, int newQuantity) {
+        Optional<Product> optionalProduct = repo.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setQuantity(product.getQuantity() - newQuantity);
+            repo.save(product);
+        } else {
+            throw new RuntimeException("Product not found with id " + productId);
+        }
+    }
 }

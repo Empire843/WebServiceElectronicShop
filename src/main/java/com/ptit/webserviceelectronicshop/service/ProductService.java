@@ -17,4 +17,5 @@ public interface ProductService {
 
     List<Product> getProductByCategory(Category category);
 
+    void updateProductQuantity(Long productId, int newQuantity);
 }

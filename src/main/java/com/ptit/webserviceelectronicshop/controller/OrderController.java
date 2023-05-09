@@ -73,7 +73,7 @@ public class OrderController {
                     orderItem.setProduct(item.getProduct());
                     orderItem.setQuantity(item.getQuantity());
                     orderItem.setOrder(order);
-
+                    productService.updateProductQuantity(item.getProduct().getId(), item.getQuantity());
                     orderItemRepository.save(orderItem);
                     list.add(orderItem);
                 }
@@ -92,6 +92,8 @@ public class OrderController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedDateTime = localDateTime.format(formatter);
         order.setPayment_at(formattedDateTime);
+
+        cartService.updateCartAfterCheckout(cartId, body.getProductIds());
         orderService.updateOrder(order);
         response.put("message", "Order created successfully");
         response.put("order", order);

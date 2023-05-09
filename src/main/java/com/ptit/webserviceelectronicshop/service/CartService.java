@@ -19,4 +19,6 @@ public interface CartService {
     void saveCart(Cart cart);
 
     Cart getCartByUserId(Long id);
+
+    void updateCartAfterCheckout(Long cartId, List<Long> productIds);
 }
