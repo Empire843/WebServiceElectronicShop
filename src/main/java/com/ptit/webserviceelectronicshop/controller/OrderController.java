@@ -23,7 +23,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api/orders")
 public class OrderController {
-//    @Autowired
+    //    @Autowired
 //    private OrderService orderService;
     @Autowired
     private OrderServiceImpl orderService;
@@ -45,7 +45,6 @@ public class OrderController {
             }
             return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
         }
-
         try {
             Order order = new Order();
             order.setPrice(orderDTO.getPrice());
@@ -55,8 +54,7 @@ public class OrderController {
             order.setProduct(this.productService.getProductById(orderDTO.getProductId()).get());
 
             this.orderService.addOrder(order);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             error.put("message", e.getMessage());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
@@ -64,14 +62,15 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderById(@PathVariable("id") Long orderId) {
-
-        return null;
+    public Order getOrderById(@PathVariable("id") Long orderId) {
+        return orderService.getOrder(orderId).orElse(null);
     }
+
     @GetMapping("/all")
     public List<Order> getAllOrder() {
-
-        return null;
+        List<Order> list = orderService.getAllOrder();
+        if (list.size() == 0) return null;
+        return orderService.getAllOrder();
     }
 
     @PutMapping("/{id}")

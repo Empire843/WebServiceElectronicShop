@@ -4,10 +4,10 @@ import com.ptit.webserviceelectronicshop.model.Order;
 import com.ptit.webserviceelectronicshop.repository.OrderRepository;
 import com.ptit.webserviceelectronicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +22,14 @@ public class OrderServiceImpl implements OrderService {
     public Order addOrder(Order order) {
         //Optional<Order> savedOrder = Optional.of(this.orderRepository.save(order));
         return this.orderRepository.save(order);
+    }
+
+    @Override
+    public Optional<Order> getOrder(Long orderId) {
+        return orderRepository.findById(orderId);
+    }
+
+    public List<Order> getAllOrder() {
+        return orderRepository.findAll();
     }
 }
