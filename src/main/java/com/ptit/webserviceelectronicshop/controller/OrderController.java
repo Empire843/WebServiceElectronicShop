@@ -55,7 +55,7 @@ public class OrderController {
             error.put("message", "User not found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        if(orderService.checkOrderByVnpayCode(body.getVnpayCode())){
+        if (orderService.checkOrderByVnpayCode(body.getVnpayCode())) {
             error.put("message", "Vnpay code is exist");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
@@ -74,9 +74,6 @@ public class OrderController {
                     orderItem.setQuantity(item.getQuantity());
                     orderItem.setOrder(order);
 
-                    order.setTotal_quantity(order.getTotal_quantity() + item.getQuantity());
-                    order.setTotal_price(order.getTotal_price() + item.getProduct().getPrice() * item.getQuantity());
-
                     orderItemRepository.save(orderItem);
                     list.add(orderItem);
                 }
@@ -88,6 +85,8 @@ public class OrderController {
         order.setTotal_price(0);
         order.setVnpayCode(body.getVnpayCode());
         order.setStatus(body.getStatus());
+        order.setTotal_quantity(body.getTotal_quantity());
+        order.setTotal_price(body.getTotal_price());
 
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

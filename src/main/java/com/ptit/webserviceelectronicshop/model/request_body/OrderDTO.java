@@ -10,8 +10,8 @@ import java.util.List;
 public class OrderDTO {
     private Long userId;
     private Long cartId;
-//    private int total_quantity;
-//    private double total_price;
+    private int total_quantity;
+    private double total_price;
     private String status;
     private String vnpayCode;
     private List<Long> productIds;
