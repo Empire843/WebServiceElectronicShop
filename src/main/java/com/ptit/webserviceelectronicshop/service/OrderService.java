@@ -8,4 +8,9 @@ public interface OrderService {
     Order addOrder(Order order);
 
     Optional<Order> getOrder(Long orderId);
+
+    void saveOrder(Order order);
+
+    void updateOrder(Order order);
+
 }

@@ -17,4 +17,6 @@ public interface CartService {
     Cart getCartById(Long id);
 
     void saveCart(Cart cart);
+
+    Cart getCartByUserId(Long id);
 }

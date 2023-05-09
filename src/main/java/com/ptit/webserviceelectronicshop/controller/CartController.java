@@ -37,7 +37,11 @@ public class CartController {
         HashMap<String, Object> error = new HashMap<>();
 
         User user = userService.getUserById(body.getUserId());
-        Cart cart = user.getCart();
+        if (user == null) {
+            error.put("message", "User not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        Cart cart = cartService.getCartByUserId(user.getId());
         List<CartItem> list = new ArrayList<>();
         if (cart == null) {
             cart = new Cart();
@@ -49,7 +53,7 @@ public class CartController {
         list = cartItemRepository.findByCartId(cart.getId());
         for (CartItem item : list) {
             if (item.getProduct().getId() == body.getProductId()) {
-                if(item.getQuantity() + body.getQuantity() > product.getQuantity()){
+                if (item.getQuantity() + body.getQuantity() > product.getQuantity()) {
                     error.put("message", "The quantity of product is not enough!");
                     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
                 }

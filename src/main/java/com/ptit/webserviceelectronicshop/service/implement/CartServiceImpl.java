@@ -29,8 +29,14 @@ public class CartServiceImpl implements CartService {
     public Cart getCartById(Long id) {
         return repository.findCartById(id);
     }
+
     @Override
-    public void saveCart(Cart cart){
+    public void saveCart(Cart cart) {
         repository.save(cart);
+    }
+
+    @Override
+    public Cart getCartByUserId(Long id) {
+        return repository.findByUserId(id);
     }
 }

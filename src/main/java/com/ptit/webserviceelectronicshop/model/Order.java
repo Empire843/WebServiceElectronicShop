@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -19,19 +22,21 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    @JsonIgnore
-    private Product product;
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<OrderItem> items = new ArrayList<>();
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "total_quantity")
+    private int total_quantity;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "total_price")
+    private double total_price;
 
     @Column(name = "status")
     private String status;
+    @Column(name = "vnpay_code")
+    private String vnpay_code;
 }

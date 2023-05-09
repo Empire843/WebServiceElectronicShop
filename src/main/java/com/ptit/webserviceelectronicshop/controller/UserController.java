@@ -57,13 +57,15 @@ public class UserController {
         HashMap<String, Object> error = new HashMap<>();
 //        ModelMapper mapper = new ModelMapper();
 //        User user = mapper.map(body, User.class)
+        if(!userService.checkUserByEmail(body.getEmail())){
+            error.put("message", "Email is already in use");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
         User user = new User();
         user.setEmail(body.getEmail());
         user.setPassword(body.getPassword());
         user.setFull_name(body.getFull_name());
         user.setRole("USER");
-        Cart cart = new Cart();
-        user.setCart(cart);
         try {
             User createdUser = userService.registerUser(user);
             response.put("message", "User registered successfully");

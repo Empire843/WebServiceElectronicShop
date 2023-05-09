@@ -3,6 +3,7 @@ package com.ptit.webserviceelectronicshop.service.implement;
 import com.ptit.webserviceelectronicshop.model.Order;
 import com.ptit.webserviceelectronicshop.repository.OrderRepository;
 import com.ptit.webserviceelectronicshop.service.OrderService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,5 +32,21 @@ public class OrderServiceImpl implements OrderService {
 
     public List<Order> getAllOrder() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public void saveOrder(Order order) {
+        orderRepository.save(order);
+    }
+    @Override
+    public void updateOrder(Order order) {
+        Order existingOrder = orderRepository.findById(order.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+        existingOrder.setStatus(order.getStatus());
+        existingOrder.setTotal_price(order.getTotal_price());
+        existingOrder.setTotal_quantity(order.getTotal_quantity());
+        existingOrder.setVnpay_code(order.getVnpay_code());
+        existingOrder.setUser(order.getUser());
+        orderRepository.save(existingOrder);
     }
 }

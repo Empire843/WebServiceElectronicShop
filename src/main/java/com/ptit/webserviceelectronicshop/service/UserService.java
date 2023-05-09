@@ -16,4 +16,7 @@ public interface UserService {
     boolean deleteUser(Long id);
 
     User login(String email);
+
+    boolean checkUserByEmail(String email);
+
 }
