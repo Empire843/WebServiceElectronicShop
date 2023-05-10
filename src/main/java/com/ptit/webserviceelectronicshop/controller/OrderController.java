@@ -59,19 +59,20 @@ public class OrderController {
             error.put("message", "Vnpay code is exist");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
-        Order order = new Order();
-        orderService.saveOrder(order);
         List<OrderItem> list = new ArrayList<>();
         Long cartId = body.getCartId();
         List<CartItem> listCartItem = cartItemRepository.findByCartId(cartId);
-        if(listCartItem.size() == 0){
+        if (listCartItem.size() == 0) {
             error.put("message", "Cart is empty!");
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
+        int flag = 0;
+        Order order = new Order();
+        orderService.saveOrder(order);
         for (CartItem item : listCartItem) {
             for (Long idp : body.getProductIds()) {
                 if (idp == item.getProduct().getId()) {
-
+                    flag++;
                     OrderItem orderItem = new OrderItem();
                     orderItem.setProduct(item.getProduct());
                     orderItem.setQuantity(item.getQuantity());
@@ -81,6 +82,11 @@ public class OrderController {
                     list.add(orderItem);
                 }
             }
+        }
+        if (flag == 0) {
+            error.put("message", "Product not found");
+            orderService.deleteOrder(order.getId());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
 
         order.setUser(user);
@@ -106,6 +112,11 @@ public class OrderController {
     @GetMapping("/{id}")
     public Order getOrderById(@PathVariable("id") Long orderId) {
         return orderService.getOrder(orderId).orElse(null);
+    }
+
+    @GetMapping("/{id}/order-items")
+    public List<OrderItem> getOrderItemsByOrderId(@PathVariable Long id) {
+        return orderItemRepository.findByOrderId(id);
     }
 
     @GetMapping("/all")

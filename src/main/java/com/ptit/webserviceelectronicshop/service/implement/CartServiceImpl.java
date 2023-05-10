@@ -44,18 +44,24 @@ public class CartServiceImpl implements CartService {
     public Cart getCartByUserId(Long id) {
         return repository.findByUserId(id);
     }
+
     @Override
     public void updateCartAfterCheckout(Long cartId, List<Long> productIds) {
         // Tìm kiếm giỏ hàng với id được chỉ định
         List<CartItem> list = cartItemRepository.findByCartId(cartId);
-        if(list.size() == 0){
+        if (list.size() == 0) {
             return;
         }
-        for (CartItem item: list) {
-            // Nếu sản phẩm có trong giỏ hàng thì xóa đi sản phẩm đó
+        for (CartItem item : list) {
+            // Nếu sản phẩm có trong giỏ hàng thì xóa đi sản phẩm đó và giảm total_amount trong cart
             if (productIds.contains(item.getProduct().getId())) {
                 cartItemRepository.delete(item);
+                Cart cart = repository.findCartById(cartId);
+                cart.setTotalAmount((long) (cart.getTotalAmount() - item.getProduct().getPrice() * item.getQuantity()));
+                repository.save(cart);
+                cartItemRepository.delete(item);
             }
+
         }
     }
 }

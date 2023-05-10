@@ -6,7 +6,6 @@ import com.ptit.webserviceelectronicshop.service.OrderService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +52,10 @@ public class OrderServiceImpl implements OrderService {
         existingOrder.setVnpayCode(order.getVnpayCode());
         existingOrder.setUser(order.getUser());
         orderRepository.save(existingOrder);
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
     }
 }
