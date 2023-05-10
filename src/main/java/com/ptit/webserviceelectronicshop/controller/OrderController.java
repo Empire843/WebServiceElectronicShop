@@ -115,7 +115,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}/order-items")
-    public List<OrderItem> getOrderItemsByOrderId(@PathVariable Long id) {
+    public List<OrderItem> getCartItemsByCartId(@PathVariable Long id) {
         return orderItemRepository.findByOrderId(id);
     }
 
