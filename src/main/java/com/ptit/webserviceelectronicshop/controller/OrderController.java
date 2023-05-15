@@ -1,10 +1,9 @@
 package com.ptit.webserviceelectronicshop.controller;
 
 import com.ptit.webserviceelectronicshop.model.*;
-import com.ptit.webserviceelectronicshop.model.request_body.OrderDTO;
+import com.ptit.webserviceelectronicshop.model.request_body.Order.OrderDTO;
 import com.ptit.webserviceelectronicshop.repository.CartItemRepository;
 import com.ptit.webserviceelectronicshop.repository.OrderItemRepository;
-import com.ptit.webserviceelectronicshop.service.OrderService;
 import com.ptit.webserviceelectronicshop.service.implement.CartServiceImpl;
 import com.ptit.webserviceelectronicshop.service.implement.OrderServiceImpl;
 import com.ptit.webserviceelectronicshop.service.implement.ProductServiceImpl;
@@ -12,11 +11,8 @@ import com.ptit.webserviceelectronicshop.service.implement.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

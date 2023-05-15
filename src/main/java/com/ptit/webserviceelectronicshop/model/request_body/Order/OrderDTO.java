@@ -1,4 +1,4 @@
-package com.ptit.webserviceelectronicshop.model.request_body;
+package com.ptit.webserviceelectronicshop.model.request_body.Order;
 
 import com.ptit.webserviceelectronicshop.model.Product;
 import com.ptit.webserviceelectronicshop.model.User;
