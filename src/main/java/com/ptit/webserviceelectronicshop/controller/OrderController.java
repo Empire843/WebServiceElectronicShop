@@ -94,7 +94,7 @@ public class OrderController {
         order.setTotal_price(body.getTotal_price());
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
         String formattedDateTime = localDateTime.format(formatter);
         order.setPayment_at(formattedDateTime);
 
