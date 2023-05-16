@@ -16,7 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByVnpayCode(String vnpayCode);
 
     @Query("SELECT new com.ptit.webserviceelectronicshop.model.request_body.RevenueStatisticsDTO(" +
-            "i.product.id AS productId, i.product.name AS productName, i.product.category.name AS categoryName, " +
+            "i.product.id AS productId, i.product.name AS productName,i.product.image AS productImage, i.product.category.name AS categoryName, " +
             "SUM(i.quantity) AS totalQuantity, SUM(i.quantity * i.product.price) AS totalPrice) " +
             "FROM Order o " +
             "JOIN OrderItem i ON o.id = i.order.id " +
