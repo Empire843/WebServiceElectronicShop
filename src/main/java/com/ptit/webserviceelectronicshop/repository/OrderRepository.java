@@ -21,7 +21,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "FROM Order o " +
             "JOIN OrderItem i ON o.id = i.order.id " +
             "WHERE o.payment_at BETWEEN :startDate AND :endDate " +
-            "GROUP BY i.product.name, i.product.category.name")
+            "GROUP BY i.product.name, i.product.category.name ORDER BY totalQuantity DESC")
 
     List<RevenueStatisticsDTO> getRevenueStatisticsByDateRange(@Param("startDate") String startDate,
                                                                @Param("endDate") String endDate);
