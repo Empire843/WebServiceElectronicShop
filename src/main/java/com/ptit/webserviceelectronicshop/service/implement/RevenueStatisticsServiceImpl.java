@@ -16,13 +16,12 @@ public class RevenueStatisticsServiceImpl implements RevenueStatisticsService {
     @Autowired
     private OrderRepository orderRepository;
 
-
     @Override
-    public List<RevenueStatisticsDTO> getRevenueStatisticsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
-        String formattedStartDate = startDate.format(formatter);
-        String formattedEndDate = endDate.format(formatter);
-        return orderRepository.getRevenueStatisticsByDateRange(formattedStartDate, formattedEndDate);
+    public List<RevenueStatisticsDTO> getRevenueStatisticsByDateRange(String startDate, String endDate) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
+//        String formattedStartDate = startDate.format(formatter);
+//        String formattedEndDate = endDate.format(formatter);
+        return orderRepository.getRevenueStatisticsByDateRange(startDate, endDate);
     }
 
 }

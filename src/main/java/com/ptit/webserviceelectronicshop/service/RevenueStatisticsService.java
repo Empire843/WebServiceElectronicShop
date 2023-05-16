@@ -10,5 +10,5 @@ import java.util.List;
 public interface RevenueStatisticsService {
 
 
-    List<RevenueStatisticsDTO> getRevenueStatisticsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+    List<RevenueStatisticsDTO> getRevenueStatisticsByDateRange(String startDate, String endDate);
 }

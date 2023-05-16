@@ -4,14 +4,14 @@ import lombok.Data;
 
 @Data
 public class RevenueStatisticsDTO {
-    private long id;
+    private long productId;
     private String productName;
     private String categoryName;
     private long totalQuantity;
     private double totalPrice;
 
-    public RevenueStatisticsDTO(long id, String productName, String categoryName, long totalQuantity, double totalPrice) {
-        this.id = id;
+    public RevenueStatisticsDTO(long productId, String productName, String categoryName, long totalQuantity, double totalPrice) {
+        this.productId = productId;
         this.productName = productName;
         this.categoryName = categoryName;
         this.totalQuantity = totalQuantity;
