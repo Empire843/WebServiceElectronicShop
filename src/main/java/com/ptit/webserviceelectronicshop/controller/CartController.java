@@ -121,4 +121,10 @@ public class CartController {
         response.put("message", "Deleted successfully!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}")
+    public Cart getCartByUserId(@PathVariable Long userId) {
+        Cart cart = cartService.getCartByUserId(userId);
+        return cart;
+    }
 }
