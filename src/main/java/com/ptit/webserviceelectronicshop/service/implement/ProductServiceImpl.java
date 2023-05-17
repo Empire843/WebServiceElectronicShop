@@ -44,7 +44,10 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> getProductById(Long id) {
         return repo.findById(id);
     }
-
+    @Override
+    public void updateProduct(Product product) {
+        repo.save(product);
+    }
     @Override
     public List<Product> getProductByCategory(Category category) {
         return repo.findByCategory(category);

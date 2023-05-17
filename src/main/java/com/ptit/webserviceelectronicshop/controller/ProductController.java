@@ -94,8 +94,20 @@ public class ProductController {
 
         if (product.isPresent()) {
             Product existingProduct = product.get();
+            Category category = categoryService.getCategoryById(body.getCategory_id());
+            if (category != null) {
+                existingProduct.setCategory(category);
+            } else {
+                error.put("error", "Category of product not found");
+                return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            }
+            existingProduct.setName(body.getName());
+            existingProduct.setPrice(body.getPrice());
+            existingProduct.setQuantity(body.getQuantity());
+            existingProduct.setImage(body.getImage());
+            existingProduct.setDescription(body.getDescription());
+            service.updateProduct(existingProduct);
 //            code here
-
             response.put("message", "Product has been updated successfully");
             response.put("product", existingProduct);
             return new ResponseEntity<>(response, HttpStatus.OK);

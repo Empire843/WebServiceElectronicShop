@@ -15,6 +15,8 @@ public interface ProductService {
 
     Optional<Product> getProductById(Long id);
 
+    void updateProduct(Product product);
+
     List<Product> getProductByCategory(Category category);
 
     void updateProductQuantity(Long productId, int newQuantity);
