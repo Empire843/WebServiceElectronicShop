@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -115,5 +116,91 @@ public class ProductController {
             error.put("error", "Product not found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/filter/products")
+    public ArrayList<Product> filterByKey(@RequestParam(name = "key") String keyword) {
+        HashMap<String, Object> error = new HashMap<>();
+        ArrayList<Product> listProducts = new ArrayList<>();
+
+        try {
+            listProducts = this.service.getProductsContainKeys(keyword);
+        }
+        catch (Exception e) {
+        }
+        return listProducts;
+    }
+
+    @GetMapping("/filter/categories")
+    public ResponseEntity<ArrayList<Product>> getProductsByCategory(@RequestParam(name = "id") Long id) {
+        ArrayList<Product> listProducts = new ArrayList<>();
+        try {
+            listProducts = this.service.getProductsByCategory(id);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listProducts);
+    }
+
+    @GetMapping("/filter/price")
+    public ResponseEntity<ArrayList<Product>> getProductInSpacePrice(
+            @RequestParam(name = "start") Double start,
+            @RequestParam(name = "end") Double end
+    ) {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            products = this.service.getProductInSpacePrice(start, end);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ArrayList<Product>> getSelectedProducts(@RequestParam("ids") List<Long> selectedIds) {
+        ArrayList<Product> products = new ArrayList<>();
+
+        try {
+            products = this.service.getProductsByIds(selectedIds);
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter/combination")
+    public ResponseEntity<ArrayList<Product>> getCombinationFilterProducts(
+            @RequestParam(name = "ids") List<Long> selectedIds,
+            @RequestParam(name = "start") Double start,
+            @RequestParam(name = "end") Double end
+    )
+    {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            ArrayList<Product> filter1 = new ArrayList<>();
+            ArrayList<Product> filter2 = new ArrayList<>();
+            filter1 = this.service.getProductsByIds(selectedIds);
+            filter2 = this.service.getProductInSpacePrice(start, end);
+
+            for(Product p1: filter1) {
+                Long id = p1.getId();
+                for(Product p2: filter2) {
+                    Long id2 = p2.getId();
+                    if(id == id2) {
+                        products.add(p1);
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(products);
     }
 }
